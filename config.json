@@ -1,0 +1,21 @@
+{
+    "sra_ids": [
+        "SRR13407667"
+    ],
+    "commands": [
+        "prefetch {tag}",
+        "vdb-validate {tag}",
+        "parallel-fastq-dump --sra-id ~/ncbi/public/sra/{tag}.sra --threads 8 --split-files",
+        "fastqc {tag}_1.fastq {tag}_2.fastq",
+        "trim_galore -j 8 --paired -q 20 {tag}_1.fastq {tag}_2.fastq",
+        "fastqc {tag}_1_val_1.fq {tag}_2_val_2.fq",
+        "bismark --multicore 10 --genome ~/HDD/genomes/mm10/ -1 {tag}_1_val_1.fq -2 {tag}_2_val_2.fq",
+        "samtools sort -m 100G -n {tag}_1_val_1_bismark_bt2_pe.bam -o {tag}_sorted.bam",
+        "deduplicate_bismark -p {tag}_sorted.bam",
+        "bismark_methylation_extractor --multicore 10 --buffer_size 100G --no_overlap --cytosine_report --CX --genome_folder ~/HDD/genomes/mm10/ {tag}_sorted.deduplicated.bam",
+        "python wgbs2bed.py -i {tag}_sorted.deduplicated.CX_report.txt -o {tag}_coordinates.bed",
+        "bedtools getfasta -tab -s -name -fi ~/HDD/genomes/mm10/mm10.fa -bed {tag}_coordinates.bed -fo {tag}_coordinates_sequences.txt",
+        "python computeFlanks.py -i {tag}_coordinates_sequences.txt -d 10 -o {tag}_flanks_methylation.csv",
+        "python analyseFlanks.py -i {tag}_flanks_methylation.csv -c preference.csv"
+    ]
+}
