@@ -5,16 +5,18 @@
 # pavel.bashtrykov@gmail.com
 ################################################################################
 
+from matplotlib.pyplot import table
 import pandas as pd
 from typing import Protocol
 
-from utils.data import ComputeFlanksDataStorage, FlanksData, Storage
+from utils.data import ComputeFlanksDataStorage, FlanksData, ReferenceFlanksStorage, Storage
 
 
 class Reader(Protocol):
     """Interfase for reading input files of different formats"""
     def read(self, infile) -> Storage:
         ...
+
 
 class AlbertsFlanksReader:
     """Reads data from csv file produced by Albert's script"""
@@ -26,6 +28,7 @@ class AlbertsFlanksReader:
                 fd = FlanksData(ind+1, block)
                 st.add(fd)
         return st
+
 
 class ComputeFlanksCSVReader:
     """Reads data from a csv file produced by computeFlanks.py"""
@@ -39,9 +42,16 @@ class ComputeFlanksCSVReader:
         return st
 
 
+class PreferenceFileCSVReader:
+    """Reads data from a csv file containing reference flaking data"""
+    def read(self, infile) -> ReferenceFlanksStorage:
+        st = ReferenceFlanksStorage(file_name=infile)
+        with open(infile, "r") as fh:
+            st.add(_read_ref_flanks_to_df(fh))
+            return st
+
 def read_input(infile, reader: Reader) -> Storage:
     return reader.read(infile)
-    
 
 def _split_albert_flanks_csv(fileholder) -> list[pd.DataFrame]:
     blocks = []
@@ -115,3 +125,7 @@ def _split_compute_flanks_csv(fileholder) -> list[pd.DataFrame]:
             line = fileholder.readline()
 
     return blocks
+
+def _read_ref_flanks_to_df(fileholder) -> list[pd.DataFrame]:
+    df = pd.read_csv(fileholder, sep=";")
+    return df

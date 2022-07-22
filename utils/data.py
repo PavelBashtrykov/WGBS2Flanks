@@ -19,3 +19,8 @@ class Storage:
 @dataclass
 class ComputeFlanksDataStorage(Storage):
     data: list[FlanksData] = field(default_factory=list)
+
+
+@dataclass
+class ReferenceFlanksStorage(Storage):
+    data: list[pd.DataFrame] = field(default_factory=list) # columns: flank, enzymes (DNMT1, DNMT3A, etc..)
