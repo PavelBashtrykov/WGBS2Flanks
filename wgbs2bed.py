@@ -1,4 +1,4 @@
-#! /usr/bin/env python3.10
+#! /usr/bin/env python
 ################################################################################
 # This script is written by Pavel Bashtrykov
 # pavel.bashtrykov@ibtb.uni-stuttgart.de
