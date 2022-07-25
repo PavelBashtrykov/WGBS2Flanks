@@ -16,7 +16,9 @@ def main():
     """
 
     # Load configuration
-    conf = json.load(open(file="./config.json"))
+    config_file = "config.json"
+    conf_file_path = os.path.join(os.path.dirname(__file__), config_file)
+    conf = json.load(open(file=conf_file_path))
 
     # Get SRA ids
     ids = conf["sra_ids"]
