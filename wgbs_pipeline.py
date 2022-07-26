@@ -29,7 +29,7 @@ def main():
 
     for f in ids:
         for c in commands:
-            command = c.format(tag=f, path=rep_path)
+            command = c.format(tag=f)
             print(f"Starting command: {command}")
             output = os.popen(command)
             for line in output:

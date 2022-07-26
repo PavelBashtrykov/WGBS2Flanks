@@ -1,22 +1,12 @@
 {
     "sra_ids": [
-        "SRR13407667"
+        "test.tab"
     ],
     "commands": [
-        "prefetch {tag}",
-        "vdb-validate {tag}",
-        "parallel-fastq-dump --sra-id ~/ncbi/public/sra/{tag}.sra --threads 8 --split-files",
-        "fastqc {tag}_1.fastq {tag}_2.fastq",
-        "trim_galore -j 8 --paired -q 20 {tag}_1.fastq {tag}_2.fastq",
-        "fastqc {tag}_1_val_1.fq {tag}_2_val_2.fq",
-        "bismark --multicore 10 --genome ~/HDD/genomes/hg38/ -1 {tag}_1_val_1.fq -2 {tag}_2_val_2.fq",
-        "samtools sort -m 100G -n {tag}_1_val_1_bismark_bt2_pe.bam -o {tag}.sorted.bam",
-        "deduplicate_bismark -p {tag}.sorted.bam",
-        "bismark_methylation_extractor --multicore 10 --buffer_size 100G --no_overlap --cytosine_report --CX --genome_folder ~/HDD/genomes/hg38/ {tag}.sorted.deduplicated.bam",
-        "python wgbs2bed.py -i {tag}.sorted.deduplicated.CX_report.txt -o {tag}.coordinates.bed",
+        "wgbs2bed.py --bmap -i {tag} -o {tag}.coordinates.bed",
         "bedtools getfasta -tab -s -name -fi ~/HDD/genomes/hg38/hg38.fa -bed {tag}.coordinates.bed -fo {tag}.coordinates.sequences.txt",
-        "python groom_bed.py -i {tag}.coordinates.sequences.txt",
-        "python computeFlanks.py -i {tag}.coordinates.sequences.bed6.bed -d 10 -o {tag}.flanks.csv",
-        "python analyseFlanks.py -i {tag}.flanks.csv -c preference.csv"
+        "groom_bed.py -i {tag}.coordinates.sequences.txt",
+        "computeFlanks.py -i {tag}.coordinates.sequences.bed6.bed -d 10 -o {tag}.flanks.csv",
+        "analyseFlanks.py -i {tag}.flanks.csv -c preference.csv"
     ]
 }
