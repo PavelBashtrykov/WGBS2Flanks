@@ -151,7 +151,8 @@ def _compute_flanks_methylation_proper_bed(
             elements = line.split()
             column4 = elements[3].split(":")
             sequence = column4[0]
-            mC, total = column4[1].split(";")
+            data = column4[1].split(";")
+            mC, total = data[0], data[1]
             
             # header, sequence = line.split()
             # header_splited = header.split(":")[0].split(";")
