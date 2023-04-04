@@ -11,8 +11,6 @@ PATH_SRA=~/HDD/ncbi/sra/
 PATH_BISMARK_GENOME=~/HDD/genomes/mm10/
 PATH_GENOME_FASTA=~/HDD/genomes/mm10/mm10.fa
 
-# conda activate bismark
-
 prefetch ${SAMPLE}\
  --max-size 100GB
 
