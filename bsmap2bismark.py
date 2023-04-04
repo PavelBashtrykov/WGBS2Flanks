@@ -1,6 +1,12 @@
 #!/usr/bin/env python
 
-# Converts WGBS result produced by Bsmap to bismark format
+################################################################################
+# This script is written by Pavel Bashtrykov
+# pavel.bashtrykov@ibtb.uni-stuttgart.de
+# pavel.bashtrykov@gmail.com
+################################################################################
+
+# Converts WGBS results produced by Bsmap to bismark format
 
 import sys
 
