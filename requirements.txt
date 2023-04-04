@@ -1,0 +1,13 @@
+python=3.10
+matplotlib
+pandas
+numpy
+seaborn
+sra-toolkit
+parallel-fastqc-dump
+fastqc
+trim-galore
+bowtie2
+samtools
+bedtools
+bismark
